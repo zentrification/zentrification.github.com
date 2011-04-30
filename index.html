@@ -2,26 +2,27 @@
 <html>
   <head>
     <title>github watched repos</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js">
+    </script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js">
     </script>
   </head>
   <body>
     <h1>Watched repositories for </h1>
     <div id="repositories">
     </div>
+    <script id="repoTemplate" type="text/x-jquery-tmpl">
+      <p>
+        <a href="${uri}">${name}</a><br>${description}</p>
+    </script>
     <script type="text/javascript">(function() {
         jQuery(document).bind('ready', function() {
-          var github_url, repos, username;
+          var github_url, username;
           username = 'zentrification';
           $('h1').append(username);
           github_url = 'http://github.com/api/v2/json/repos/watched/' + username + '?callback=?';
-          repos = [];
           return $.getJSON(github_url, function(json, status) {
-            return $.each(json.repositories, function(key, value) {
-              var repo_name;
-              repo_name = '<a href="' + value.uri + '">' + value.name + '</a>';
-              return $('#repositories').append('<p>' + repo_name + '<br/>' + value.description + '</p>');
-            });
+            return $('#repoTemplate').tmpl(json.repositories).appendTo('#repositories');
           });
         });
       }).call(this); 
