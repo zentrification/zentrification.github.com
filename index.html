@@ -6,50 +6,61 @@
     </script>
     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js">
     </script>
+    <script src="assets/js/jquery.tablesorter.min.js">
+    </script>
+    <script src="assets/js/main.js">
+    </script>
+    <link href="assets/css/styles.css" media="screen" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Watched repositories for </h1>
-    <div id="repositories">
+    <div class="wrapper round-8" id="content">
+      <h1>Watched repositories for<a></a>
+      </h1>
+      <ul class="round-5" id="menu">
+        <li class="round-3">Language: <span>All</span>
+          <ul id="languages">
+            <li class="language-name">
+              <a href="#">All</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <script id="languageTemplate" type="text/x-jquery-tmpl">
+        <li class="language-name">
+          <a href="#">${name}</a>
+        </li>
+      </script>
+      <table id="repositories">
+        <thead>
+          <tr class="repository">
+            <th class="owner">owner</th>
+            <th class="repository-name">name</th>
+            <th class="width-100 language language-name">language</th>
+            <th>watchers</th>
+            <th>forks</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <script id="repoTemplate" type="text/x-jquery-tmpl">
+        <tr class="repository bordered" rel="${language}">
+          <td class="owner">
+            <a class="owner" href="#">${owner.capitalize()}</a>
+          </td>
+          <td class="repository-name">{{if fork}}<a class="repo-title forked" href="${url}">${name.capitalize()}</a>{{else}}<a class="repo-title" href="${url}">${name.capitalize()}</a>{{/if}}<br />${description}</td>
+          <td class="width-100 language language-name">
+            <a href="#" rel="${language}">${language}</a>
+          </td>
+          <td class="width-50">
+            <span class="watchers">${watchers}</span>
+          </td>
+          <td class="width-50">
+            <span class="forks">${forks}</span>
+          </td>
+        </tr>
+      </script>
+      <img id="ajax-loader" src="assets/img/ajax-loader.gif" />
     </div>
-    <script id="repoTemplate" type="text/x-jquery-tmpl">
-      <p>
-        <a href="${uri}">${name}</a><br>${description}</p>
-    </script>
-    <script type="text/javascript">(function() {
-        jQuery(document).bind('ready', function() {
-          var github_url, username;
-          username = 'zentrification';
-          $('h1').append(username);
-          github_url = 'http://github.com/api/v2/json/repos/watched/' + username + '?callback=?';
-          return $.getJSON(github_url, function(json, status) {
-            return $('#repoTemplate').tmpl(json.repositories).appendTo('#repositories');
-          });
-        });
-      }).call(this); 
-    </script>
-    <style type="text/css">
-      body {
-        font: 12px/16px verdana, sans-serif;
-      } 
-      a {
-        text-decoration: none;
-      }
-      a:hover {
-        color: red;
-      }
-      
-      h1, p {
-        padding: 5px 15px;
-      }
-      
-      h1 {
-        font-family: arial;
-      }
-      
-      #repositories {
-        width: 70%;
-      }
-      
-    </style>
   </body>
 </html>
