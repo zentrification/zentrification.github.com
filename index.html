@@ -1,66 +1,90 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="assets/js/all.js">
+    </script>
+    <link href="assets/css/all.css" rel="stylesheet" />
     <title>github watched repos</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js">
-    </script>
-    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js">
-    </script>
-    <script src="assets/js/jquery.tablesorter.min.js">
-    </script>
-    <script src="assets/js/main.js">
-    </script>
-    <link href="assets/css/styles.css" media="screen" rel="stylesheet" type="text/css" />
   </head>
-  <body>
-    <div class="wrapper round-8" id="content">
-      <h1>Watched repositories for<a></a>
-      </h1>
-      <ul class="round-5" id="menu">
-        <li class="round-3">Language: <span>All</span>
-          <ul id="languages">
-            <li class="language-name">
-              <a href="#">All</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <script id="languageTemplate" type="text/x-jquery-tmpl">
-        <li class="language-name">
-          <a href="#">${name}</a>
-        </li>
-      </script>
-      <table id="repositories">
+  <body class="container">
+    <section id="navigation">
+      <h2>Watched repositories</h2>
+      <div class="topbar-wrapper" style="z-index: 5;">
+        <div class="topbar" data-dropdown="dropdown">
+          <div class="topbar-inner">
+            <div class="container">
+              <h3>
+                <a>Watched Repositories</a>
+              </h3>
+              <ul class="nav">
+                <li class="dropdown">
+                  <a class="dropdown-toggle username"></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a>Change User</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <ul class="nav secondary-nav">
+                <li>
+                  <form>
+                    <input accesskey="f" id="filter" placeholder="Filter" tabindex="0" type="text" />
+                  </form>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle">Languages</a>
+                  <ul class="dropdown-menu" id="languages">
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="content">
+      <table class="hidden" id="repositories">
         <thead>
           <tr class="repository">
             <th class="owner">owner</th>
             <th class="repository-name">name</th>
             <th class="width-100 language language-name">language</th>
-            <th>watchers</th>
-            <th>forks</th>
+            <th>w</th>
+            <th>f</th>
           </tr>
         </thead>
         <tbody>
         </tbody>
       </table>
-      <script id="repoTemplate" type="text/x-jquery-tmpl">
-        <tr class="repository bordered" rel="${language}">
-          <td class="owner">
-            <a class="owner" href="#">${owner.capitalize()}</a>
-          </td>
-          <td class="repository-name">{{if fork}}<a class="repo-title forked" href="${url}">${name.capitalize()}</a>{{else}}<a class="repo-title" href="${url}">${name.capitalize()}</a>{{/if}}<br />${description}</td>
-          <td class="width-100 language language-name">
-            <a href="#" rel="${language}">${language}</a>
-          </td>
-          <td class="width-50">
-            <span class="watchers">${watchers}</span>
-          </td>
-          <td class="width-50">
-            <span class="forks">${forks}</span>
-          </td>
-        </tr>
-      </script>
-      <img id="ajax-loader" src="assets/img/ajax-loader.gif" />
-    </div>
+    </section>
+    <section id="ajax-loader">
+      <div class="alert-message warning">
+        <p>Loading data from Github API</p>
+      </div>
+    </section>
+    <script id="languageTemplate" type="text/x-jquery-tmpl">
+      <li class="language-name">
+        <a href="#">${name}</a>
+      </li>
+    </script>
+    <script id="repositoryTemplate" type="text/x-jquery-tmpl">
+      <tr class="repository bordered" rel="${language}">
+        <td class="owner">
+          <a class="owner" href="#">${owner.login.capitalize()}</a>
+        </td>
+        <td class="repository-name">{{if fork}}<a class="repo-title forked" href="${url}">${name.capitalize()}</a>{{else}}<a class="repo-title" href="${url}">${name.capitalize()}</a>{{/if}}<br /><span class="description">${description}</span><br /><a href="${homepage}">homepage</a>
+        </td>
+        <td class="width-100 language language-name">
+          <a href="#" rel="${language}">${language}</a>
+        </td>
+        <td class="width-50">
+          <span class="watchers">${watchers}</span>
+        </td>
+        <td class="width-50">
+          <span class="forks">${forks}</span>
+        </td>
+      </tr>
+    </script>
   </body>
 </html>
